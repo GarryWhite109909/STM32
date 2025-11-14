@@ -4,6 +4,7 @@
 int main()
 {
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOF, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
 	
 	GPIO_InitTypeDef g;
 	g.GPIO_Pin = GPIO_Pin_9;
@@ -12,7 +13,18 @@ int main()
 	g.GPIO_OType = GPIO_OType_PP;
 	GPIO_Init(GPIOF, &g);
 	
-	GPIO_ResetBits(GPIOF, GPIO_Pin_9);
+	g.GPIO_Pin = GPIO_Pin_10;
+	GPIO_Init(GPIOF, &g);
 	
-	while(1);
+	g.GPIO_Pin = GPIO_Pin_13;
+	GPIO_Init(GPIOE, &g);
+	
+	g.GPIO_Pin = GPIO_Pin_14;
+	GPIO_Init(GPIOE, &g);
+	
+	GPIO_ResetBits(GPIOF, GPIO_Pin_9);
+	GPIO_ResetBits(GPIOF, GPIO_Pin_10);
+	GPIO_ResetBits(GPIOE, GPIO_Pin_13);
+	GPIO_ResetBits(GPIOE, GPIO_Pin_14);
+	while(1);	
 }
