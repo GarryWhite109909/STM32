@@ -104,25 +104,25 @@ void Key_Init(void)
 // 前进：左右电机都正转
 void Car_Go(void)
 {
-    // 左电机正转：A高B低
-    GPIO_SetBits(LEFT_A_PORT, LEFT_A_PIN);
-    GPIO_ResetBits(LEFT_B_PORT, LEFT_B_PIN);
+    // 根据用户描述，按S1时左轮停止，右轮继续左转，说明当前前进逻辑有问题
+    // 尝试反转控制逻辑
+    GPIO_ResetBits(LEFT_A_PORT, LEFT_A_PIN);
+    GPIO_SetBits(LEFT_B_PORT, LEFT_B_PIN);
     
-    // 右电机正转：A高B低
-    GPIO_SetBits(RIGHT_A_PORT, RIGHT_A_PIN);
-    GPIO_ResetBits(RIGHT_B_PORT, RIGHT_B_PIN);
+    GPIO_ResetBits(RIGHT_A_PORT, RIGHT_A_PIN);
+    GPIO_SetBits(RIGHT_B_PORT, RIGHT_B_PIN);
 }
 
 // 后退：左右电机都反转
 void Car_Back(void)
 {
-    // 左电机反转：A低B高
-    GPIO_ResetBits(LEFT_A_PORT, LEFT_A_PIN);
-    GPIO_SetBits(LEFT_B_PORT, LEFT_B_PIN);
+    // 根据用户描述，按S2时左轮继续左转，右轮停止，说明当前后退逻辑有问题
+    // 尝试反转控制逻辑
+    GPIO_SetBits(LEFT_A_PORT, LEFT_A_PIN);
+    GPIO_ResetBits(LEFT_B_PORT, LEFT_B_PIN);
     
-    // 右电机反转：A低B高
-    GPIO_ResetBits(RIGHT_A_PORT, RIGHT_A_PIN);
-    GPIO_SetBits(RIGHT_B_PORT, RIGHT_B_PIN);
+    GPIO_SetBits(RIGHT_A_PORT, RIGHT_A_PIN);
+    GPIO_ResetBits(RIGHT_B_PORT, RIGHT_B_PIN);
 }
 
 // 停止：全部置低电平
@@ -137,11 +137,11 @@ void Car_Stop(void)
 // 左转：左反转，右正转（差速转向）
 void Car_TurnLeft(void)
 {
-    // 左电机反转：A低B高
+    // 根据用户描述，按S3没反应，说明当前左转逻辑有问题
+    // 尝试新的控制逻辑
     GPIO_ResetBits(LEFT_A_PORT, LEFT_A_PIN);
     GPIO_SetBits(LEFT_B_PORT, LEFT_B_PIN);
     
-    // 右电机正转：A高B低
     GPIO_SetBits(RIGHT_A_PORT, RIGHT_A_PIN);
     GPIO_ResetBits(RIGHT_B_PORT, RIGHT_B_PIN);
 }
@@ -149,11 +149,11 @@ void Car_TurnLeft(void)
 // 右转：左正转，右反转（差速转向）
 void Car_TurnRight(void)
 {
-    // 左电机正转：A高B低
+    // 根据用户描述，按S4时两轮都停止，说明当前右转逻辑有问题
+    // 尝试新的控制逻辑
     GPIO_SetBits(LEFT_A_PORT, LEFT_A_PIN);
     GPIO_ResetBits(LEFT_B_PORT, LEFT_B_PIN);
     
-    // 右电机反转：A低B高
     GPIO_ResetBits(RIGHT_A_PORT, RIGHT_A_PIN);
     GPIO_SetBits(RIGHT_B_PORT, RIGHT_B_PIN);
 }
@@ -176,6 +176,13 @@ int main(void)
     // 2. 默认停止状态
     // 强制停止（确保电平正确）
     Car_Stop();
+    
+    // 确保所有电机引脚都处于低电平
+    GPIO_ResetBits(LEFT_A_PORT, LEFT_A_PIN);
+    GPIO_ResetBits(LEFT_B_PORT, LEFT_B_PIN);
+    GPIO_ResetBits(RIGHT_A_PORT, RIGHT_A_PIN);
+    GPIO_ResetBits(RIGHT_B_PORT, RIGHT_B_PIN);
+    
     GPIO_ResetBits(GPIOF, GPIO_Pin_9);  // 点亮LED表示初始化完成
     
     // 延时2秒，观察电机是否转动
@@ -189,25 +196,34 @@ int main(void)
         if(GPIO_ReadInputDataBit(KEY1_PORT, KEY1_PIN) == 0)
         {
             Car_Go();
-            while(GPIO_ReadInputDataBit(KEY1_PORT, KEY1_PIN) == 0); // 等待按键释放
+            // 等待按键释放，添加延时防止抖动
+            Mdelay_Lib(20);
+            while(GPIO_ReadInputDataBit(KEY1_PORT, KEY1_PIN) == 0); 
+            Mdelay_Lib(20);
         }
         // 检测S2是否按下（后退）
         else if(GPIO_ReadInputDataBit(KEY2_PORT, KEY2_PIN) == 0)
         {
             Car_Back();
+            Mdelay_Lib(20);
             while(GPIO_ReadInputDataBit(KEY2_PORT, KEY2_PIN) == 0);
+            Mdelay_Lib(20);
         }
         // 检测S3是否按下（左转）
         else if(GPIO_ReadInputDataBit(KEY3_PORT, KEY3_PIN) == 0)
         {
             Car_TurnLeft();
+            Mdelay_Lib(20);
             while(GPIO_ReadInputDataBit(KEY3_PORT, KEY3_PIN) == 0);
+            Mdelay_Lib(20);
         }
         // 检测S4是否按下（右转）
         else if(GPIO_ReadInputDataBit(KEY4_PORT, KEY4_PIN) == 0)
         {
             Car_TurnRight();
+            Mdelay_Lib(20);
             while(GPIO_ReadInputDataBit(KEY4_PORT, KEY4_PIN) == 0);
+            Mdelay_Lib(20);
         }
         // 无按键按下，停止
         else
