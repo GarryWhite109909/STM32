@@ -1523,7 +1523,7 @@ F (..\..\FWLIB\inc\stm32f4xx_syscfg.h)(0x581CC67C)()
 F (..\..\FWLIB\inc\stm32f4xx_tim.h)(0x581CC67C)()
 F (..\..\FWLIB\inc\stm32f4xx_usart.h)(0x581CC67C)()
 F (..\..\FWLIB\inc\stm32f4xx_wwdg.h)(0x581CC67C)()
-F (.\src\main.c)(0x69194A1A)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\..\CORE -I..\..\FWLIB\inc -I.\src-I "D:\code\STM32\5. 工程模板\STM32F4_CODE_模板\USER\Template\RTE"-I D:\Temp\Keli\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Temp\Keli\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\src\main.c)(0x6919B40D)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\..\CORE -I..\..\FWLIB\inc -I.\src-I "D:\code\STM32\5. 工程模板\STM32F4_CODE_模板\USER\Template\RTE"-I D:\Temp\Keli\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0-I D:\Temp\Keli\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F407xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (src\main.h)(0x58221746)
 I (src\stm32f4xx.h)(0x63514056)
 I (..\..\CORE\core_cm4.h)(0x581CC64E)
